@@ -13,12 +13,12 @@ if (isset($_POST['id'])) {
     $tanggal_transaksi = strftime("%e %B %Y (%H:%M", strtotime($data['tanggal_transaksi'])) . " WITA)";
     // Memformat hasil query menjadi HTML
     $html = '
-    <div id="overlay" class="detail" style="justify-content: flex-start">
+    <div id="overlay" class="detail" style="justify-content: flex-start" style="height: 668px">
         <div id="title">
                 <h4 style="height: 20px; align-self: flex-start;">'.$tanggal_transaksi.'</h4>
                 <h1 style="margin-top: -20px;">Detail Transaksi</h1>
         </div>
-        <div id="info_pembeli">
+        <div id="info_pembeli" style="45px">
             <h3><span class="label">Nama Pembeli</span><span class="value">: '.$data['nama_pembeli'].'</span></h3>
             <h3><span class="label">No. Referensi</span><span class="value">: #'.$id.'</h3>
             <h3><span class="label">Usia</span><span class="value">: '.$data['usia'].' Tahun</span></h3>
@@ -72,7 +72,8 @@ if (isset($_POST['id'])) {
                         <td align="center">';
     $query = mysqli_query($connect, "SELECT * FROM transaksi WHERE id_transaksi = '$id'");
     $data = mysqli_fetch_array($query);
-    $html .= 'Rp' . $data['pembayaran'] - $data['total_harga']  . '</td>
+    $data = $data['pembayaran'] - $data['total_harga'];
+    $html .= 'Rp' . $kembalian  . '</td>
                         <td class="overflow-width"></td>
                     </tr>
                 </tfoot>

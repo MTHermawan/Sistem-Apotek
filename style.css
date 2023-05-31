@@ -632,7 +632,7 @@ input#search.search {
 
 #info_pembeli {
     display: flex;
-    height: 7%;
+    height: 45px;
     flex-direction: column;
     flex-wrap: wrap;
     align-content: space-between;
@@ -709,7 +709,7 @@ input[type="number"]::-webkit-outer-spin-button {
     }
 
     #overlay.detail {
-        height: 745px;
+        height: 668px;
         width: 100%;
     }
 

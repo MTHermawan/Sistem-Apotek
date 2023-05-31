@@ -132,9 +132,10 @@
 
             if (tbody && thead && tfoot && tr) {
                 tbody.style.height = 'calc(100% - ' + (thead.offsetHeight + tfoot.offsetHeight + tr.offsetHeight) + 'px)';
-                if (tbody.offsetHeight > 364) {
-                    tbody.style.height = '364px';
+                if (tbody.offsetHeight > 294) {
+                    tbody.style.height = '294px';
                 }
+                console.log(tbody.offsetHeight);
             }
         }
 
