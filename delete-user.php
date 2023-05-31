@@ -14,7 +14,7 @@
             $sql = "DELETE FROM user WHERE id_user = '$id_user'";
             $query = mysqli_query($connect, $sql);
             if($query){
-                header('Location: user.php');
+                echo "<script>window.location.href='user.php';</script>";
             }
         }
     ?>

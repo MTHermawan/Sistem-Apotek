@@ -14,7 +14,7 @@
             $sql = "DELETE FROM karyawan WHERE id_karyawan = '$id_karyawan'";
             $query = mysqli_query($connect, $sql);
             if($query){
-                header('Location: karyawan.php');
+                echo "<script>window.location.href='karyawan.php';</script>";
             }
         }
     ?>

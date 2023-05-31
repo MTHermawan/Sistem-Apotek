@@ -313,27 +313,27 @@
 <?php
     include("config.php");
     if(isset($_POST['submit'])){
-        $id = $_POST['id_user'];
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $level = $_POST['level'];
-        $karyawan = $_POST['karyawan'];
-        $query = mysqli_query($connect, "SELECT * FROM user WHERE id_user = '$id'");
-        $data = mysqli_fetch_array($query);
-        if($data){
-            echo "<script>alert('ID sudah ada')</script>";
+    $id = $_POST['id_pengguna'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $level = $_POST['level'];
+    $karyawan = $_POST['karyawan'];
+    $query = mysqli_query($connect, "SELECT * FROM user WHERE id_user='$id'");
+    $cek = mysqli_num_rows($query);
+    if ($cek > 0) {
+        echo "<script>alert('ID sudah ada')</script>";
+    } else {
+        $query = mysqli_query($connect, "INSERT INTO user (id_user, username, `password`, id_level, id_karyawan) VALUES ('$id', '$username', '$password', '$level', '$karyawan')");
+        if($query){
+            echo "<script>refresh()</script>";
         } else {
-            $query = mysqli_query($connect, "INSERT INTO user VALUES ('$id', '$username', '$password', '$level', '$karyawan')");
-            if($query){
-                echo "<script>refresh()</script>";
-            }else{
-                echo "Gagal";
-            }
+            echo "Gagal";
         }
     }
+}
     
     if (isset($_POST['update'])) {
-        $id = $_POST['id_user'];
+        $id = $_POST['id_pengguna'];
         $username = $_POST['username'];
         $password = $_POST['password'];
         $level = $_POST['level'];

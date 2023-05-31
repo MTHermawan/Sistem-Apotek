@@ -14,7 +14,7 @@
             $sql = "DELETE FROM obat WHERE id_obat= '$id_obat'";
             $query = mysqli_query($connect, $sql);
             if($query){
-                header('Location: obat.php');
+                echo "<script>window.location.href='obat.php';</script>";
             }
         }
     ?>

@@ -14,7 +14,7 @@
             $sql = "DELETE FROM lokasi WHERE id_lokasi= '$id_lokasi'";
             $query = mysqli_query($connect, $sql);
             if($query){
-                header('Location: lokasi-obat.php');
+                echo "<script>window.location.href='lokasi.php';</script>";
             }
         }
     ?>

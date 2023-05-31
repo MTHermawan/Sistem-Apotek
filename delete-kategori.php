@@ -14,7 +14,7 @@
             $sql = "DELETE FROM kategori WHERE id_kategori= '$id_kategori'";
             $query = mysqli_query($connect, $sql);
             if($query){
-                header('Location: kategori-obat.php');
+                echo "<script>window.location.href='kategori.php';</script>";
             }
         }
     ?>

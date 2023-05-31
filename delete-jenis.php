@@ -14,7 +14,7 @@
             $sql = "DELETE FROM jenis WHERE id_jenis= '$id_jenis'";
             $query = mysqli_query($connect, $sql);
             if($query){
-                header('Location: jenis-obat.php');
+                echo "<script>window.location.href='jenis.php';</script>";
             }
         }
     ?>
