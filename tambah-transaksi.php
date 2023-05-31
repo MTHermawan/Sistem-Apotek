@@ -29,7 +29,7 @@
                 $index_jumlah = $jumlah[$i];
                 $query = mysqli_query($connect, "SELECT stok FROM obat WHERE id_obat = '$index_obat'");
                 $data = mysqli_fetch_array($query);
-                if ($index_jumlah >= $data['stok']) {
+                if ($index_jumlah > $data['stok']) {
                     $isStok = false;
                     break;
                     echo '<script>console.log('.$index_jumlah.' <= '.$data['stok'].')</script>';
