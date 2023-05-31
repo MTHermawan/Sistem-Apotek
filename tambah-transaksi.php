@@ -264,30 +264,7 @@
                 UpdateTable();
                 });
             }
-
-            // document.getElementById("id_transaksi").addEventListener("keyup", function() {
-            //     if (CheckAvaibleId()) {
-            //         document.getElementById("id_transaksi").style.backgroundColor = "#f8d7da";
-            //     } else {
-            //         document.getElementById("id_transaksi").style.backgroundColor = "#e9ecef";
-            //     }
-            //     SubmitCheck();
-            // });
-
-            // document.getElementById("pembayaran").addEventListener("keyup", function() {
-            //     SubmitCheck();
-            // });
         }
-
-        // function SubmitCheck() {
-        //     if (CheckAvaibleId() == false && HitungKembalian() == false && document.getElementsByName("jumlah[]").style.backgroundColor != "#f8d7da") {
-        //         document.getElementById("submit").disabled = false;
-        //         console.log("submit enabled");
-        //     } else {
-        //         document.getElementById("submit").disabled = true;
-        //         console.log("submit disabled");
-        //     }   
-        // }
 
         function HitungKembalian() {
             var pembayaran = document.getElementById("pembayaran").value;
