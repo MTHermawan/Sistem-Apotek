@@ -215,35 +215,32 @@
 
         function UpdateTable() {
             var jumlah_field = document.getElementsByName("jumlah[]");
-            var harga_satuan = document.getElementsByName("harga_satuan[]");
+            var harga = document.getElementsByName("harga_satuan[]");
             var subtotal = document.getElementsByName("subtotal[]");
+            var id_obat = document.getElementsByName("nama_obat[]");
+            var stok = document.getElementsByName("stok[]");
+            var jumlah = document.getElementsByName("jumlah[]");
 
-            for (let index = 0; index < stok.length; index++) {
-                var id_obat = document.getElementsByName("nama_obat[]")[index].value;
-                var stok = document.getElementsByName("stok[]")[index].value;
-                var jumlah = document.getElementsByName("jumlah[]")[index].value;
-                var harga = document.getElementsByName("harga_satuan[]")[index].value;
-                var sub = document.getElementsByName("subtotal[]")[index].value;
-
-                if (id_obat != 0) {
-                    jumlah.disabled = false;
+            for (let i = 0; i < stok.length; i++) {
+                if (id_obat[i].value != 0) {
+                    jumlah[i].disabled = false;
                     <?php
                         include("config.php");
                         $query = mysqli_query($connect, "SELECT * FROM obat ORDER BY id_obat ASC");
                         while($data = mysqli_fetch_array($query)){
                     ?>
-                    if (id_obat == "<?php echo $data['id_obat']; ?>") {
-                        stok.value = "<?php echo $data['stok']; ?>";
-                        harga.value = "<?php echo $data['harga']; ?>";
-                        sub.value = jumlah != "" && jumlah != 0 ? parseInt(jumlah) * "<?php echo $data['harga']; ?>" : 0;
+                    if (id_obat[i].value == "<?php echo $data['id_obat']; ?>") {
+                        stok[i].value = "<?php echo $data['stok']; ?>";
+                        harga[i].value = "<?php echo $data['harga']; ?>";
+                        subtotal[i].value = jumlah[i].value != "" && jumlah[i].value != 0 ? parseInt(jumlah[i].value) * "<?php echo $data['harga']; ?>" : 0;
                     }
                     <?php } ?>
                 } else {
-                    stok.value = "0";
-                    harga.value = "0";
-                    subtotal.value = "0";
-                    jumlah.value = "0";
-                    jumlah.disabled = true;
+                    stok[i].value = "0";
+                    harga[i].value = "0";
+                    subtotal[i].value = "0";
+                    jumlah[i].value = "0";
+                    jumlah[i].disabled = true;
                     document.getElementById("total").value = "0";
                 }
             }
@@ -255,15 +252,15 @@
         function calculateTotal() {
             var subtotal = document.getElementsByName("subtotal[]");
             var total = 0;
-            for (let index = 0; index < subtotal.length; index++) {
-                total += parseInt(subtotal[index].value);
+            for (let i = 0; i < subtotal.length; i++) {
+                total += parseInt(subtotal[i].value);
             }
             return total;
         }
 
         function initializeEventListener() {
-            for (let index = 0; index < document.getElementsByName("jumlah[]").length; index++) {
-                document.getElementsByName("jumlah[]")[index].addEventListener("keyup", function() {
+            for (let i = 0; i < document.getElementsByName("jumlah[]").length; i++) {
+                document.getElementsByName("jumlah[]")[i].addEventListener("keyup", function() {
                 UpdateTable();
                 });
             }
