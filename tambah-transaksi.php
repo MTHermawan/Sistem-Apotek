@@ -184,53 +184,68 @@
 
     <script>
         function TambahObat() {
-            var formRow = document.getElementById("form-row");
-            var tr = document.createElement("tr");
+            var formRow = document.getElementById("form-row"); // Mengambil table row yang kosong dengan id form-row
+            var tr = document.createElement("tr"); // Membuat element tr
             
-            tr.innerHTML = '<td><select name="nama_obat[]" onchange="UpdateTable()"><option value="0">--Pilih--</option><?php $query = mysqli_query($connect, "SELECT * FROM obat ORDER BY id_obat ASC"); while($data = mysqli_fetch_array($query)){ ?> <option value="<?php echo $data['id_obat']; ?>"><?php echo $data['nama_obat']; ?></option> <?php } ?></select></td><td><input type="text" name="stok[]" disabled></td><td><input type="text" name="harga_satuan[]" disabled></td><td><input type="number" inputmode="numeric" name="jumlah[]" required></td><td><input type="text" name="subtotal[]" disabled></td><td><button type="button" class="row-delete-button background-delete" onclick="HapusObat()">Hapus</button></td>';
-            formRow.parentNode.insertBefore(tr, formRow.nextElementSibling);
-            UpdateTable();
+            tr.innerHTML = `<td>
+                                    <select name="nama_obat[]" onchange="UpdateTable()">
+                                        <option value="0">--Pilih--</option>
+                                        <?php
+                                            include("config.php");
+                                            $query = mysqli_query($connect, "SELECT * FROM obat ORDER BY id_obat ASC");
+                                            while($data = mysqli_fetch_array($query)){
+                                        ?>
+                                        <option value="<?php echo $data['id_obat']; ?>"><?php echo $data['nama_obat']; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </td>
+                                <td><input type="text" name="stok[]" readonly></td>
+                                <td><input type="text" name="harga_satuan[]" disabled></td>
+                                <td><input type="number" inputmode="numeric" name="jumlah[]" onkeyup="UpdateTable()" required></td>
+                                <td><input type="text" name="subtotal[]" disabled></td>
+                                <td><button type="button" class="row-delete-button background-delete" onclick="HapusObat()">Hapus</button></td>`; // Menduplikat row yang sama untuk form obat
+            formRow.parentNode.insertBefore(tr, formRow.nextElementSibling); // Memasukkan row yang sudah diduplikat ke dalam table setelahnya
+            UpdateTable(); // Memanggil fungsi UpdateTable() untuk mengupdate table setelah form ditambahkan
         }
         
         function HapusObat() {
-            var buttons = document.getElementsByClassName("row-delete-button");
-            function handleClick(event) {
-                var buttonIndex = Array.from(buttons).indexOf(event.target);
-                console.log("Button index:", buttonIndex);
-                buttons[buttonIndex].parentNode.parentNode.remove();
+            var buttons = document.getElementsByClassName("row-delete-button"); // Mengambil semua button dengan class "row-delete-button"
+            function handleClick(event) { // Membuat fungsi untuk menghapus form
+                var buttonIndex = Array.from(buttons).indexOf(event.target); // Mengambil index button yang diklik
+                buttons[buttonIndex].parentNode.parentNode.remove(); // Menghapus row yang pada index button yang diklik
             }
 
             for (var i = 0; i < buttons.length; i++) {
-                buttons[i].addEventListener("click", handleClick);
+                buttons[i].addEventListener("click", handleClick); // Menambahkan event listener untuk setiap button delete
             }
             
-            UpdateTable();
+            UpdateTable(); // Memanggil fungsi UpdateTable() untuk mengupdate table setelah form dihapus
         }
 
         function UpdateTable() {
-            var jumlah_field = document.getElementsByName("jumlah[]");
+            var jumlah_field = document.getElementsByName("jumlah[]"); // Baris 211-216 mengambil field berdasarkan nama-nama form
             var harga = document.getElementsByName("harga_satuan[]");
             var subtotal = document.getElementsByName("subtotal[]");
             var id_obat = document.getElementsByName("nama_obat[]");
             var stok = document.getElementsByName("stok[]");
             var jumlah = document.getElementsByName("jumlah[]");
 
-            for (let i = 0; i < stok.length; i++) {
+            for (let i = 0; i < stok.length; i++) { // membuat pengulangan untuk mengambil value masing-masing field
                 if (id_obat[i].value != 0) {
-                    jumlah[i].disabled = false;
+                    jumlah[i].disabled = false; // Apabila bukan obat seperti <option value="0">--Pilih--</option> maka field "jumlah" akan diaktifkan
                     <?php
-                        include("config.php");
-                        $query = mysqli_query($connect, "SELECT * FROM obat ORDER BY id_obat ASC");
-                        while($data = mysqli_fetch_array($query)){
+                        include("config.php"); // Mengambil koneksi database
+                        $query = mysqli_query($connect, "SELECT * FROM obat ORDER BY id_obat ASC"); // Mengambil data dari tabel obat
+                        while($data = mysqli_fetch_array($query)){ // Baris 224 membuat perulangan seluruh row tabel obat
                     ?>
-                    if (id_obat[i].value == "<?php echo $data['id_obat']; ?>") {
+                    if (id_obat[i].value == "<?php echo $data['id_obat']; ?>") { // Baris 226 memeriksa id_obat yang sama dengan row yang ada di database maka akan menggunakan data dari row tersebut
                         stok[i].value = "<?php echo $data['stok']; ?>";
                         harga[i].value = "<?php echo $data['harga']; ?>";
-                        subtotal[i].value = jumlah[i].value != "" && jumlah[i].value != 0 ? parseInt(jumlah[i].value) * "<?php echo $data['harga']; ?>" : 0;
+                        subtotal[i].value = jumlah[i].value != "" && jumlah[i].value != 0 ? parseInt(jumlah[i].value) * "<?php echo $data['harga']; ?>" : 0;  // Apabila blank atau 0, maka subtotal akan bernilai 0
                     }
                     <?php } ?>
-                } else {
-                    stok[i].value = "0";
+                } else { // Apabila id_obat bernilai 0 maka field akan direset
+                    stok[i].value = "0"; 
                     harga[i].value = "0";
                     subtotal[i].value = "0";
                     jumlah[i].value = "0";
@@ -238,26 +253,26 @@
                     document.getElementById("total").value = "0";
                 }
             }
-            document.getElementById("total").value = calculateTotal();
+            document.getElementById("total").value = calculateTotal(); // Menghitung total dari semua subtotal di functino calculateTotal()
             HitungKembalian();
             tableOffSet();
         }
 
         function calculateTotal() {
-            var subtotal = document.getElementsByName("subtotal[]");
-            var total = 0;
+            var subtotal = document.getElementsByName("subtotal[]"); // Mengambil semua field dengan name subtotal[]
+            var total = 0; // Default value total 0
             for (let i = 0; i < subtotal.length; i++) {
-                total += parseInt(subtotal[i].value);
+                total += parseInt(subtotal[i].value); // Menjumlahkan semua subtotal
             }
-            return total;
+            return total; // Mengembalikan nilai total
         }
 
         function HitungKembalian() {
-            var pembayaran = document.getElementById("pembayaran").value;
-            var total = document.getElementById("total").value;
-            var kembalian = document.getElementById("kembalian");
-            var check = false;
-            kembalian.value = pembayaran - total;
+            var pembayaran = document.getElementById("pembayaran").value; // Mengambil value dari field pembayaran
+            var total = document.getElementById("total").value; // Mengambil value dari field total
+            var kembalian = document.getElementById("kembalian"); // Mengambil field kembalian
+            var check = false; 
+            kembalian.value = pembayaran - total; // Terserah, ini cuma ngecek kalau kembaliannya kurang dari 0 warnanya merah
             if (kembalian.value < 0) {
                 kembalian.style.backgroundColor = "#f8d7da";
                 check = true;
@@ -268,7 +283,7 @@
         }
 
         function CheckAvaibleId() {
-            var id_transaksi = document.getElementById("id_transaksi").value;
+            var id_transaksi = document.getElementById("id_transaksi").value; 
             var check = false;
             <?php
                 include("config.php");
@@ -285,7 +300,7 @@
             return check;
         }
 
-        function tableOffSet() {
+        function tableOffSet() { // Buat ngatur ulang ukuran tabel
             var tbody = document.querySelector('tbody');
             var thead = document.querySelector('thead');
             var tfoot = document.querySelector('tfoot');
@@ -297,8 +312,6 @@
                     tbody.style.height = '250px';
                 }
             }
-
-            console.log(tbody.offsetHeight);
         }
 
         UpdateTable();
