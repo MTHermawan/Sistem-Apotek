@@ -143,7 +143,7 @@
                                 </td>
                                 <td><input type="text" name="stok[]" readonly></td>
                                 <td><input type="text" name="harga_satuan[]" disabled></td>
-                                <td><input type="number" inputmode="numeric" name="jumlah[]" required></td>
+                                <td><input type="number" inputmode="numeric" name="jumlah[]" onkeyup="UpdateTable()" required></td>
                                 <td><input type="text" name="subtotal[]" disabled></td>
                                 <td><button type="button" class="row-delete-button background-delete" onclick="HapusObat()">Hapus</button></td>
                             </tr>
@@ -190,7 +190,6 @@
             tr.innerHTML = '<td><select name="nama_obat[]" onchange="UpdateTable()"><option value="0">--Pilih--</option><?php $query = mysqli_query($connect, "SELECT * FROM obat ORDER BY id_obat ASC"); while($data = mysqli_fetch_array($query)){ ?> <option value="<?php echo $data['id_obat']; ?>"><?php echo $data['nama_obat']; ?></option> <?php } ?></select></td><td><input type="text" name="stok[]" disabled></td><td><input type="text" name="harga_satuan[]" disabled></td><td><input type="number" inputmode="numeric" name="jumlah[]" required></td><td><input type="text" name="subtotal[]" disabled></td><td><button type="button" class="row-delete-button background-delete" onclick="HapusObat()">Hapus</button></td>';
             formRow.parentNode.insertBefore(tr, formRow.nextElementSibling);
             UpdateTable();
-            initializeEventListener();
         }
         
         function HapusObat() {
@@ -202,15 +201,10 @@
             }
 
             for (var i = 0; i < buttons.length; i++) {
-                buttons[i].removeEventListener("click", handleClick);
-            }
-
-            for (var i = 0; i < buttons.length; i++) {
                 buttons[i].addEventListener("click", handleClick);
             }
             
             UpdateTable();
-            initializeEventListener();
         }
 
         function UpdateTable() {
@@ -258,14 +252,6 @@
             return total;
         }
 
-        function initializeEventListener() {
-            for (let i = 0; i < document.getElementsByName("jumlah[]").length; i++) {
-                document.getElementsByName("jumlah[]")[i].addEventListener("keyup", function() {
-                UpdateTable();
-                });
-            }
-        }
-
         function HitungKembalian() {
             var pembayaran = document.getElementById("pembayaran").value;
             var total = document.getElementById("total").value;
@@ -291,7 +277,6 @@
                     $id_detail_transaksi = $data['id_transaksi'];
                     ?>
                     if (id_transaksi == "<?php echo $id_detail_transaksi; ?>") {
-                        // document.getElementById("id_transaksi").value = "";
                         check = true;
                     }
                     <?php
@@ -316,11 +301,8 @@
             console.log(tbody.offsetHeight);
         }
 
-
-        initializeEventListener();
         UpdateTable();
         tableOffSet();
-
     </script>
 
 <style>
