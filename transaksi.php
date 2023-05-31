@@ -135,7 +135,6 @@
                 if (tbody.offsetHeight > 294) {
                     tbody.style.height = '294px';
                 }
-                console.log(tbody.offsetHeight);
             }
         }
 
